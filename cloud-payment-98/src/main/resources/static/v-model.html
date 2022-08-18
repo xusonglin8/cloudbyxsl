@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .thin {
+            font-weight: 200;
+        }
+        .italic {
+            font-style: italic;
+        }
+
+        .active {
+            letter-spacing: 0.5em;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="n1"><!--v-bind可以省略成':'、可以写JS表达式"-->
+<h1 :class="['thin','italic']">dadadadada</h1>
+    <select v-model="opt" class="['thin','italic']">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+    </select>
+
+    <input type="text" v-model="n2">
+
+    <input type="button" value="=" @click="count">
+
+    <input type="text" v-model="result">
+</div>
+
+<script>
+    var vue = new Vue({
+        el: "#app",
+        data:{
+            n1: 0,
+            n2: 0,
+            result: 0,
+            opt: '+'
+        },
+        methods:{
+            count(){
+                this.result = eval(parseInt(this.n1) + this.opt + parseInt(this.n2)) ;
+            }
+        }
+    });
+</script>
+</body>
+</html>

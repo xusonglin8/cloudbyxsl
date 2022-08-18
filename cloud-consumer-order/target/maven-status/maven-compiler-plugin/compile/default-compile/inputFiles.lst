@@ -1,0 +1,9 @@
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\OrderApplication.java
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\config\ApplicationContext.java
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\controller\OrderController.java
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\config\FeignFallBack.java
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\entities\CommonResult.java
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\config\ConfigBean.java
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\entities\Payment.java
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\controller\IOrderController.java
+D:\workspace\cloud2020\cloud-consumer-order\src\main\java\com\atxsl\springcloud\test.java

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <!--父组件在引用子组件时可以通过属性绑定的形式传递到子组件内部-->
+        <com1 v-bind:parentmsg="msg"></com1>
+    </div>
+    <com2 @func="show"></com2>
+</div>
+<template id="temp1">
+    <div>
+        <h1>这是子组件</h1>
+        <input type="button" value="父组件传过来的方法" @click="parentShow">
+    </div>
+</template>
+<script>
+
+    var com2 = {
+        template: '#temp1',
+        methods:{
+            parentShow(){
+                /*emit代表触发、调用的意思*/
+                this.$emit('func','123','321')
+            }
+        }
+    }
+    var vue = new Vue({
+        el: "#app",
+        data:{
+            msg: 'hello',
+
+        },
+        methods:{
+            show(data1,data2){
+                console.log("父组件向子组件传递方法"+ data1 + data2);
+            }
+        },
+        components: {
+            //子组件中默认无法访问到父组件中data上的数据、method中的方法
+            com1:{data(){
+                    return{
+                        title:'123',
+                        content:'111'
+                    }
+                },
+                template: '<h1>这是子组件---{{ parentmsg }}</h1>',
+                props:['parentmsg'] //从父组件中传递过来的数据，需定义一下才能使用该数据，只读的
+            },
+            com2
+        }
+    });
+</script>
+</body>
+</html>

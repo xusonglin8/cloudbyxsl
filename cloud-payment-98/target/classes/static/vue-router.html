@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+    <style>
+        .v-enter,
+        .v-leave-to{
+            opacity: 0;
+            transiform: translateX(140px);
+        }
+
+        .v-enter-avtive,
+        .v-leave-active{
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--默认渲染一个a标签 可以使用tag属性渲染成其他标签-->
+    <router-link to="/login">登录</router-link>
+    <router-link to="/register">注册</router-link>
+    <!--占位符，展示路由规则匹配到的组件，-->
+    <transition mode="out-in">
+        <router-view></router-view>
+    </transition>
+</div>
+<script>
+    //组件模板对象
+    var login = {
+        template: '<h1>登录组件</h1>',
+        created(){
+            console.log(this.$router)
+        }
+    }
+    var register = {
+        template: '<h1>注册组件</h1>'
+    }
+
+    var routerObj = new VueRouter({
+        routes: [
+            //路由匹配规则，每个规则都是一个对象，有两个必须的属性
+            //属性1 是 path，表示监听 哪个路由连接地址；
+            //属性2 是component ，表示匹配路由地址匹配到的path对应的组件
+            {path: '/',redirect:'login'},
+            {path: '/login',component:login},
+            {path: '/register',component:register}
+        ],
+        liveActiveClass: myclass //设置router-link的class 默认为router-active-class 可以根据此class属性设置高亮样式
+    })
+    var vm = new Vue({
+        el:'#app',
+        data:{
+        },
+        methods:{},
+        router: routerObj //将路由规则对象，注册到vm实例中，用来监听url地址的变化，然后展示对应的组件
+
+    })
+</script>
+</body>
+</html>

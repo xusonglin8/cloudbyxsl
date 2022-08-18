@@ -1,0 +1,32 @@
+server:
+  port: 8001
+
+spring:
+  mvc:
+    view:
+      suffix: .html
+      prefix: /
+  application:
+    name: cloud-payment-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/cloud2020?characterEncoding=UTF-8
+    username: root
+    password: 1qaz2wsx
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+eureka:
+  client:
+    #表示是否入住eureka，默认为true
+    register-with-eureka: true
+    #是否从eureka抓取注册信息，默认为true。集群必须设置为true，才能配置ribbon使用负载均衡
+    fetch-registry: true
+    service-url:
+      #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址
+      defaultZone: http://localhost:7001/eureka/
+

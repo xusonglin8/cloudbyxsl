@@ -1,0 +1,4 @@
+com\atxsl\springcloud\springcloudApplication.class
+com\atxsl\springcloud\controller\ApiFallbackProvider.class
+com\atxsl\springcloud\entities\CommonResult.class
+com\atxsl\springcloud\controller\ApiFallbackProvider$1.class

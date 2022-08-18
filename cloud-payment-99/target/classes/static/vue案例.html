@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css" >
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.1/vue-resource.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+</head>
+<style>
+    .v-enter,.v-leave-to{
+        opacity: 0;
+        transform: translateX(80px);
+    }
+
+    .v-enter-active,.v-leave-active{
+        transition: all 0.4s ease;
+    }
+</style>
+<body>
+<div id="app">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">添加品牌</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <label >
+                Id:
+                <input type="text" class="form-control" v-model="id">
+            </label>
+            <label >
+                Name:
+                <input type="text" class="form-control" v-model="name" @keyup.f2="add">
+            </label>
+            <input type="button" value="添加" class="btn btn-primary" @click="add" >
+
+            <label >
+                搜索名称关键字:
+                <input type="text" class="form-control" v-model="keyword" v-focus>
+            </label>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Ctime</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in list" :key="item.id">
+                <td>{{ item.id }}</td>
+                <td v-text="item.name"></td>
+                <td>{{ item.ctime | timeFormat('yyyy-MM-DD') }}</td>
+                <td>
+                    <a href="" @click="del">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="button" value="get请求" @click="getInfo">
+    <p>{{ msg | msgFormat }}</p>
+    <!--需求：点击按钮，让h显示，再点击，隐藏-->
+    <input type="button" value="toggle" @click="clickShow">
+    <transition>
+        <h3 v-if="flag">这是toggle</h3>
+    </transition>
+<!--    <my-com1></my-com1>
+    <my-com2></my-com2>
+    <counter></counter>-->
+    <a href="" @click.prevent="comName='myCom1'">com1</a>
+    <a href="" @click.prevent="comName='myCom2'">com2</a>
+    <transition mode="out-in">
+        <component :is="comName"></component>
+    </transition>
+</div>
+<template id="temp1">
+    <div>
+        <h1>通过template在外部定义组件结构，这个方式，有代码的只能提示和高亮</h1>
+    </div>
+</template>
+<template id="temp2">
+    <div>
+        <input type="button" value="+1" @click="increment">
+        <h3>{{ count }}</h3>
+    </div>
+</template>
+<script>
+    var temp2Data = {count:0}
+    Vue.component('myCom1',Vue.extend({
+        template: '<h3>组件创建</h3>', //指定组件展示的HTML结构 只能使用唯一的根元素
+        data: function () {//组件中的data必须为一个方法，且必须返回一个对象
+            return {msg:'自定义data数据'}
+        }
+    }))
+    Vue.component('myCom2',{
+        template: '#temp1' //方式2
+    })
+    Vue.component('counter',{
+        template: '#temp2', //方式2
+        data: function(){
+            return temp2Data;
+        },
+        methods: {
+            increment(){
+                this.count++
+            }
+        }
+    })
+    /*第一个参数为组件的名称*/
+    Vue.filter('msgFormat',function (msg){
+        return msg.replace(/单纯/g,'邪恶');
+    } )
+
+    Vue.filter('timeFormat',function (dateStr,pattern){
+        var dt = new Date(dateStr);
+
+        var y = dt.getFullYear().toString().padStart(4,'0');
+        var m = (dt.getMonth() + 1).toString().padStart(2,'0');
+        var d = dt.getDay().toString().padStart(2,'0');
+
+        return `${y}-${m}-${d}`;
+    } )
+
+    /*全局自定义按键修饰符*/
+    Vue.config.keyCodes.f2 = 113;
+
+    /*使用Vue.directive() 定义全局的指令*/
+    Vue.directive('focus',{
+        bind: function (el) {//当指令绑定到元素上时，执行bind，只执行一次
+            el.focus()  //第一个函数永远是el,表示被绑定的指令的那个元素，是一个原生的JS对象
+        },
+        inserted: function (el) {//元素插入到Dom中时，执行inserted
+            //一个元素 ，只有插入Dom中才能获取焦点
+            el.focus()
+        },
+        updated: function () {//当VNode更新的时候，会执行update，可能会触发多次
+
+        }
+    })
+
+    var vm =new Vue({
+        el:'#app',
+        data:{
+            id: null,
+            name:null,
+            keyword: null,
+            flag: true,
+            msg: '单纯的人单纯的狗',
+            comName:'myCom1',
+            list:[
+                {id:1,name:"奔驰",ctime:new Date()},
+                {id:2,name:"宝马",ctime:new Date()},
+            ]
+        },
+        methods:{
+            add(){
+               this.list.push({id:this.id,name:this.name,ctime:new Date()})
+                this.id = null;
+               this.name = null
+            },
+            del(){
+
+            },
+            clickShow(){
+                this.flag = !this.flag;
+            },
+            getInfo(){
+                axios.get("http://localhost:8001/payment/getPaymentById/1")
+                    .then(function (response) {
+                        console.log(response);
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+        },
+        filters:{/*定义私有的过滤器*/
+            msgFormat (msg) {
+                return msg.replace(/单纯/g,'无语');
+            }
+        },
+        directives:{/*定义私有的指令*/
+
+        },
+        component:{
+
+        },
+        beforeCreate(){//实例已经在内存中创建、未初始化methods、data
+
+        },
+        created(){//初始化methods、data等属性
+
+        },
+        beforeMount(){//模板在内存中编译完成，未渲染到页面中
+
+        },
+        mounted(){//已经挂载在到页面
+
+        },
+        beforeUpdate(){//数据更新了,界面还没有更新
+
+        },
+        updated(){//页面和数据都更新了
+
+        },
+        beforeDestroy(){//销毁阶段， 此时组件中的所有数据、方法、指令、过滤器等还处于可用状态
+
+        },
+        destroyed(){//已经完全销毁
+
+        }
+    });
+
+</script>
+</body>
+</html>

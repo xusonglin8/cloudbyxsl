@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vuebase</title>
+<style>
+    [v-cloak]{
+        display: none;
+    }
+    .inner{
+        height: 150px;
+        background-color: crimson;
+    }
+</style>
+<script src="js/vue.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <p v-cloak>{{msg}}</p><!--v-cloak解决闪烁问题 编译时不显示 渲染时再显示-->
+    <p v-text="msg2">{{msg}}</p><!--没有闪烁问题、覆盖内容、-->
+    <p v-html="msg2">{{msg}}</p><!--解析Dom指令-->
+    <input type="button" value="动" :title="msg" @click="move"><!--v-bind可以省略成':'、可以写JS表达式"-->
+    <input type="button" value="停" :title="msg" @click="stop"><!--v-bind可以省略成':'、可以写JS表达式"-->
+    <div class="class" @click="divlHandler">
+        <input type="button" value="chuo" :title="msg" @click.stop="btnHandler"><!--v-bind可以省略成':'、可以写JS表达式"-->
+        <a href="http://www.baidu.com" class="href" @click.stop.prevent="linkclick">百度</a>
+    </div>
+    <p>{{msg}}</p><!--解析Dom指令-->
+</div>
+<script>
+    /*创建一个vue的实例*/
+    var vue = new Vue({
+        el: '#app',//表示当前vue实例控制页面的哪个区域
+        data: {//存放el中用到的数据
+            msg: '动起来',
+            msg2: "<h1>haha<h1>",
+            intervalID: null
+        },
+        methods: {
+            move() {
+                var _this = this;
+                if(this.intervalID!=null){
+                    return
+                }
+                 this.intervalID = setInterval(function () {
+                    var start = _this.msg.substring(0, 1);
+                    var end = _this.msg.substring(1);
+                    _this.msg =  end + start ;
+                },400)
+            },
+            stop() {
+                clearInterval(this.intervalID);
+                this.intervalID = null;
+            },
+            divlHandler(){
+                alert("1")
+            },
+            btnHandler(){
+                alert("2")
+            },
+            linkclick(){
+              alert("baidu")
+    }
+        }
+    });
+</script>
+</body>
+</html>

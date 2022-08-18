@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="button" value="change" @click="change">
+    <!--v-if移除元素-->
+    <h3 v-if="flag">v-if test</h3>
+    <!--修改display属性-->
+    <h3 v-show="flag">v-show test</h3>
+</div>
+<script>
+    var vue = new Vue({
+        el: "#app",
+        data:{
+            flag: true
+        },
+        methods:{
+            change(){
+                this.flag=!this.flag;
+            }
+        }
+    });
+</script>
+</body>
+</html>
