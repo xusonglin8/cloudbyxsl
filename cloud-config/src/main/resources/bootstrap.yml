@@ -1,26 +1,12 @@
 spring:
-  profiles:
-    active: dev
-
----
-spring:
-  profiles: prod
   application:
-    name: config-single-client
+    name: config-single-server  # 应用名称
   cloud:
     config:
-      uri: http://localhost:3301
-      label: master
-      profile: prod
-
-
----
-spring:
-  profiles: dev
-  application:
-    name: config-single-client
-  cloud:
-    config:
-      uri: http://localhost:3301
-      label: master
-      profile: dev
+      server:
+        git:
+          uri: git@github.com/xusonglin8/cloudbyxsl.git #配置文件所在仓库
+          username: xusonglin8
+          password: xsl961105
+          default-label: master #配置文件分支
+          search-paths: cloud-config/src/main/resources  #配置文件所在根目录
